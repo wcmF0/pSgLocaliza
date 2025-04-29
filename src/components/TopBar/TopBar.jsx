@@ -10,13 +10,14 @@ const TopBar = () => {
         <nav>
           <ul>
             <li>
-              <Link to="/">Início</Link>
+              <Link className="Link" to="/">
+                Início
+              </Link>
             </li>
             <li>
-              <Link to="/comojogar">Como Jogar</Link>
-            </li>
-            <li>
-              <Link to="/about">Sobre</Link>
+              <Link className="Link" to="/comojogar">
+                Como Jogar
+              </Link>
             </li>
           </ul>
         </nav>

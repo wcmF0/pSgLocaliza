@@ -27,3 +27,35 @@
   align-items: center;
   gap: 0.5rem;
 }
+
+.Link {
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.Link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  background: #a6a6a6;
+  width: 0%;
+  transition: width 0.3 ease;
+}
+
+.Link:hover::after {
+  width: 100%;
+  animation: heartbeat116 1.5s ease-in-out 0.3s infinite;
+}
+
+@keyframes heartbeat116 {
+  0%,
+  100% {
+    width: 100%;
+  }
+  50% {
+    width: 60%;
+  }
+}

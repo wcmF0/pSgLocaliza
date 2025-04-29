@@ -1,9 +1,7 @@
+import ComoJogarContent from "../components/ComoJogarContent/ComoJogarContent";
+
 const ComoJogar = () => {
-  return (
-    <div>
-      <h1>Esta é a pagina do Como Jogar</h1>
-    </div>
-  );
+  return <ComoJogarContent />;
 };
 
 export default ComoJogar;
