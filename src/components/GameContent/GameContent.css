@@ -92,3 +92,40 @@
     color: white;
   }
 }
+
+.retry-button {
+  margin: 1rem;
+  outline: none;
+  height: 40px;
+  text-align: center;
+  width: 150px;
+  border-radius: 28px;
+  background: red;
+  border: 1px solid red;
+  letter-spacing: 1px;
+  text-shadow: 0;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: "Roboto", sans-serif;
+}
+
+.retry-button:hover {
+  color: red;
+  background: white;
+}
+
+.retry-button:hover p {
+  color: red;
+}
+
+.retry-button p {
+  color: white;
+}
+
+.tentativas-container {
+  margin: 1rem;
+  font-family: "Roboto", sans-serif;
+  font-size: 1.2rem;
+}

@@ -8,6 +8,8 @@ export default function GameContent({ modo }) {
   const [imagemIndex, setImagemIndex] = useState(0);
   const [acertou, setAcertou] = useState(false);
   const [mensagem, setMensagem] = useState("");
+  const [tentativasRestantes, setTentativasRestantes] = useState(5);
+  const [perdeu, setPerdeu] = useState(false);
 
   const endpoint =
     modo === "padrao"
@@ -16,25 +18,28 @@ export default function GameContent({ modo }) {
 
   const verificarEndpoint =
     modo === "padrao"
-      ? "http://localhost:3001/api/verificar/padrao"
-      : "http://localhost:3001/api/verificar/livre";
+      ? "http://localhost:3001/api/padrao/verificar"
+      : "http://localhost:3001/api/livre/verificar";
+
+  const carregarBairro = async () => {
+    try {
+      const data = await fetch(endpoint).then((res) => res.json());
+      setBairroDoDia(data);
+      setImagemIndex(0);
+      setTentativa("");
+      setSugestoes([]);
+      setMensagem("");
+      setAcertou(false);
+      setPerdeu(false);
+      setTentativasRestantes(5);
+    } catch (err) {
+      console.error("Erro ao buscar o bairro:", err);
+      setMensagem("Erro ao buscar o bairro. Tente novamente mais tarde.");
+    }
+  };
 
   useEffect(() => {
-    console.log("Buscando bairro do modo:", modo);
-    setBairroDoDia(null);
-    fetch(endpoint)
-      .then((res) => {
-        console.log("Resposta da API:", res);
-        return res.json();
-      })
-      .then((data) => {
-        console.log("Bairro recebido:", data);
-        setBairroDoDia(data);
-      })
-      .catch((err) => {
-        console.error("Erro no fetch:", err);
-        setMensagem("Erro ao buscar o bairro. Tente novamente mais tarde.");
-      });
+    carregarBairro();
   }, [modo]);
 
   const handleChange = (e) => {
@@ -58,7 +63,6 @@ export default function GameContent({ modo }) {
 
   const verificarResposta = async (e) => {
     e.preventDefault();
-
     const resposta = tentativa.trim().toLowerCase();
 
     try {
@@ -70,25 +74,42 @@ export default function GameContent({ modo }) {
 
       const data = await res.json();
 
-      if (data.correta) {
+      if (data.correto) {
         setAcertou(true);
-        setMensagem("🎉 Parabéns! Você acertou o bairro!");
+        setMensagem(data.mensagem || "🎉 Parabéns! Você acertou o bairro!");
+
+        // Quando acertar, carregue um novo bairro no modo livre
         if (modo === "livre") {
-          // carregar novo bairro
-          const novoBairro = await fetch(endpoint).then((r) => r.json());
-          setBairroDoDia(novoBairro);
-          setImagemIndex(0);
-          setAcertou(false);
+          setTimeout(() => {
+            carregarBairro(); // carrega novo bairro e reseta tudo
+          }, 1000);
         }
       } else {
-        if (imagemIndex < bairroDoDia.imagens.length - 1) {
-          setImagemIndex(imagemIndex + 1);
-          setMensagem("❌ Errou! Veja mais uma imagem...");
+        if (data.erro === "Você esgotou suas tentativas. Tente novamente!") {
+          setMensagem("🚫 Você esgotou suas tentativas.");
+          setPerdeu(true);
+          setTentativasRestantes(0);
         } else {
-          setMensagem("🚫 Você errou! Não há mais imagens.");
+          // Atualiza tentativas restantes
+          const novasTentativas = Math.max(0, data.tentativasRestantes || 0);
+          setTentativasRestantes(novasTentativas);
+
+          if (novasTentativas === 0) {
+            setMensagem("🚫 Você esgotou suas tentativas.");
+            setPerdeu(true);
+          } else {
+            // Verifica se ainda há mais imagens, se sim, incrementa a imagem
+            if (imagemIndex < bairroDoDia.imagens.length - 1) {
+              setImagemIndex(imagemIndex + 1);
+              setMensagem("❌ Errou! Veja mais uma imagem...");
+            } else {
+              setMensagem("🚫 Você esgotou as imagens deste bairro.");
+            }
+          }
         }
       }
 
+      // Limpa a tentativa e sugestões
       setTentativa("");
       setSugestoes([]);
     } catch (error) {
@@ -96,8 +117,16 @@ export default function GameContent({ modo }) {
     }
   };
 
-  if (!bairroDoDia) {
-    return <p>Carregando bairro...</p>;
+  const tentarNovamente = () => {
+    carregarBairro();
+  };
+
+  if (
+    !bairroDoDia ||
+    !bairroDoDia.imagens ||
+    bairroDoDia.imagens.length === 0
+  ) {
+    return <p>Bairro sem imagens disponíveis. Tente novamente mais tarde.</p>;
   }
 
   return (
@@ -114,34 +143,48 @@ export default function GameContent({ modo }) {
         className="game-img"
       />
 
-      {!acertou && (
-        <form onSubmit={verificarResposta} className="game-form">
-          <input
-            type="text"
-            placeholder="Nome do bairro"
-            value={tentativa}
-            onChange={handleChange}
-            required
-            className="game-input"
-          />
+      {!acertou && !perdeu && (
+        <>
+          <form onSubmit={verificarResposta} className="game-form">
+            <input
+              type="text"
+              placeholder="Nome do bairro"
+              value={tentativa}
+              onChange={handleChange}
+              required
+              className="game-input"
+            />
 
-          {sugestoes.length > 0 && (
-            <ul className="suggestions-list">
-              {sugestoes.map((bairro) => (
-                <li key={bairro} onClick={() => preencherInput(bairro)}>
-                  {bairro}
-                </li>
-              ))}
-            </ul>
+            {sugestoes.length > 0 && (
+              <ul className="suggestions-list">
+                {sugestoes.map((bairro) => (
+                  <li key={bairro} onClick={() => preencherInput(bairro)}>
+                    {bairro}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <button type="submit" className="game-button">
+              Enviar
+            </button>
+          </form>
+
+          {tentativasRestantes > 0 && (
+            <p className="tentativas-container">
+              Tentativas restantes: {tentativasRestantes}
+            </p>
           )}
-
-          <button type="submit" className="game-button">
-            Enviar
-          </button>
-        </form>
+        </>
       )}
 
       {mensagem && <p className="game-mensagem">{mensagem}</p>}
+
+      {perdeu && (
+        <button onClick={tentarNovamente} className="retry-button">
+          Tentar novamente
+        </button>
+      )}
     </div>
   );
 }
