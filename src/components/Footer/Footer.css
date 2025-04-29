@@ -1,0 +1,19 @@
+.footer {
+  background-color: #282c34;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.footer p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.footer a {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
