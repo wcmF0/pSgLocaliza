@@ -1,7 +1,12 @@
 import ComoJogarContent from "../components/ComoJogarContent/ComoJogarContent";
+import PageWrapper from "../components/PageWrapper/PageWrapper";
 
 const ComoJogar = () => {
-  return <ComoJogarContent />;
+  return (
+    <PageWrapper>
+      <ComoJogarContent />
+    </PageWrapper>
+  );
 };
 
 export default ComoJogar;

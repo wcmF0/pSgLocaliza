@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "./TopBar.css";
-import LogoSgLocaliza from "/public/SgLocaliza.png";
+import LogoSgLocaliza from "/SgLocaliza.png";
 
 const TopBar = () => {
   return (
