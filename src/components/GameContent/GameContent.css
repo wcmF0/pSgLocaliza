@@ -85,3 +85,10 @@
 .suggestions-list li:hover {
   color: yellow;
 }
+
+@media (max-width: 768px) {
+  .game-button {
+    background: green;
+    color: white;
+  }
+}
