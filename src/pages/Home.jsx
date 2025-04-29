@@ -1,7 +1,7 @@
-import GameContent from "../components/GameContent/GameContent";
+import HomeContent from "../components/HomeContent/HomeContent";
 
 const Home = () => {
-  return <GameContent />;
+  return <HomeContent />;
 };
 
 export default Home;

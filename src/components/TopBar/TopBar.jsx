@@ -10,7 +10,7 @@ const TopBar = () => {
         <nav>
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/">Início</Link>
             </li>
             <li>
               <Link to="/comojogar">Como Jogar</Link>
