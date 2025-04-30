@@ -5,12 +5,12 @@ const HomeContent = () => {
   return (
     <div className="home-container">
       <div>
-        <h3>Advinhe bairros de São Gonçalo</h3>
+        <h3>Adivinhe bairros de São Gonçalo</h3>
         <ul>
           <li className="padrao">
             <Link to="/jogar/padrao">
               <h2>Padrão</h2>
-              <p>Sera que você consegue acertar o bairro do dia?</p>
+              <p>Será que você consegue acertar o bairro do dia?</p>
             </Link>
           </li>
           <li className="livre">

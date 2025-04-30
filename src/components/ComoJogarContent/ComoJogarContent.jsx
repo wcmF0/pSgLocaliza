@@ -30,8 +30,8 @@ const ComoJogarContent = () => {
             <p>1 - Você tem até 5 tentativas por bairro.</p>
             <p>2 - Caso você acerte, suas tentativas serão zeradas.</p>
             <p>
-              3 - A cada erro, a imagem será trocada pela próxima imagem do
-              mesmo bairro.
+              3 - A cada erro a imagem será trocada pela próxima imagem do mesmo
+              bairro.
             </p>
             <p>4 - Se você perder todas as tentativas, é GG.</p>
           </li>
