@@ -13,15 +13,10 @@ export default function GameContent({ modo }) {
   const [perdeu, setPerdeu] = useState(false);
   const [contador, setContador] = useState(""); // Estado para o cronômetro
 
-  const endpoint =
-    modo === "padrao"
-      ? "http://localhost:3001/api/padrao"
-      : "http://localhost:3001/api/livre";
+  const endpoint = modo === "padrao" ? "/api/padrao" : "/api/livre";
 
   const verificarEndpoint =
-    modo === "padrao"
-      ? "http://localhost:3001/api/padrao/verificar"
-      : "http://localhost:3001/api/livre/verificar";
+    modo === "padrao" ? "/api/padrao-verificar" : "api/livre-verificar";
 
   const carregarBairro = async () => {
     try {
