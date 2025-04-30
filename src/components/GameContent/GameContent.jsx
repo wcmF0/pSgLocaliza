@@ -151,7 +151,7 @@ export default function GameContent({ modo }) {
     !bairroDoDia.imagens ||
     bairroDoDia.imagens.length === 0
   ) {
-    return <p>Bairro sem imagens disponíveis. Tente novamente mais tarde.</p>;
+    return <p className="carregando">Carregando...</p>;
   }
 
   return (

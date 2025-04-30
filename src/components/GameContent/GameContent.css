@@ -179,3 +179,9 @@
   font-weight: 100;
   font-size: 4rem;
 }
+
+.carregando {
+  margin-top: 1rem;
+  text-align: center;
+  justify-content: center;
+}
