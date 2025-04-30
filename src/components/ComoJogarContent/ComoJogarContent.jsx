@@ -18,8 +18,8 @@ const ComoJogarContent = () => {
               locais.
             </p>
             <p>
-              3 - A cada erro, a imagem será trocada pela próxima imagem do
-              mesmo bairro.
+              3 - A cada erro a imagem será trocada pela próxima imagem do mesmo
+              bairro.
             </p>
           </li>
           <li className="comojogar-livre">
