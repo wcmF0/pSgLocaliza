@@ -125,7 +125,50 @@
 }
 
 .tentativas-container {
-  margin: 1rem;
-  font-family: "Roboto", sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 1.2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tentativas-label {
+  font-weight: bold;
+}
+
+.coracao {
+  font-size: 1.8rem;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.coracao.viva {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.coracao.perdida {
+  opacity: 0.5;
+  transform: scale(0.9);
+}
+
+.try-livre-button {
+  margin-top: 1rem;
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.try-livre-button:hover {
+  background-color: #0056b3;
+}
+
+.game-img {
+  padding: 0.5rem;
+  border: 2px solid #f2c14e;
 }

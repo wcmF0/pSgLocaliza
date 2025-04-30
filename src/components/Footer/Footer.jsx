@@ -6,7 +6,12 @@ const Footer = () => {
     <footer className="footer">
       <p>
         Desenvolvido por
-        <a href="">
+        <a
+          a
+          href="https://github.com/wcmF0"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           wcmF0 <Github />{" "}
         </a>
       </p>

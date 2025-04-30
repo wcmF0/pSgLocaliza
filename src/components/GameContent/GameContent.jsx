@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./GameContent.css";
+import todosBairros from "../../data/todosBairros.json";
 
 export default function GameContent({ modo }) {
   const [bairroDoDia, setBairroDoDia] = useState(null);
@@ -10,6 +11,7 @@ export default function GameContent({ modo }) {
   const [mensagem, setMensagem] = useState("");
   const [tentativasRestantes, setTentativasRestantes] = useState(5);
   const [perdeu, setPerdeu] = useState(false);
+  const [contador, setContador] = useState(""); // Novo estado para o cronômetro
 
   const endpoint =
     modo === "padrao"
@@ -38,21 +40,43 @@ export default function GameContent({ modo }) {
     }
   };
 
+  // Função para calcular a contagem regressiva até meia-noite
+  const calcularContagemRegressiva = () => {
+    const now = new Date();
+    const nextMidnight = new Date();
+    nextMidnight.setHours(24, 0, 0, 0); // Definir próxima meia-noite
+
+    const diff = nextMidnight - now; // Diferença em milissegundos
+
+    const horas = Math.floor(diff / 1000 / 60 / 60);
+    const minutos = Math.floor((diff / 1000 / 60) % 60);
+    const segundos = Math.floor((diff / 1000) % 60);
+
+    setContador(
+      `${horas < 10 ? "0" : ""}${horas}:${minutos < 10 ? "0" : ""}${minutos}:${
+        segundos < 10 ? "0" : ""
+      }${segundos}`
+    );
+  };
+
   useEffect(() => {
     carregarBairro();
+    const timer = setInterval(calcularContagemRegressiva, 1000); // Atualiza a contagem regressiva a cada segundo
+
+    return () => clearInterval(timer); // Limpa o intervalo quando o componente for desmontado
   }, [modo]);
 
   const handleChange = (e) => {
     const valor = e.target.value;
     setTentativa(valor);
 
-    if (valor.length > 0 && bairroDoDia) {
-      const filtrado = [bairroDoDia.nome].filter((bairro) =>
+    if (valor.length > 0) {
+      const filtrado = todosBairros.filter((bairro) =>
         bairro.toLowerCase().startsWith(valor.toLowerCase())
       );
       setSugestoes(filtrado);
     } else {
-      setSugestoes([]);
+      setSugestoes([]); // Limpa sugestões se o input estiver vazio
     }
   };
 
@@ -78,38 +102,40 @@ export default function GameContent({ modo }) {
         setAcertou(true);
         setMensagem(data.mensagem || "🎉 Parabéns! Você acertou o bairro!");
 
-        // Quando acertar, carregue um novo bairro no modo livre
         if (modo === "livre") {
-          setTimeout(() => {
-            carregarBairro(); // carrega novo bairro e reseta tudo
+          setTimeout(async () => {
+            await carregarBairro(); // carrega novo bairro e reseta tudo
           }, 1000);
         }
       } else {
-        if (data.erro === "Você esgotou suas tentativas. Tente novamente!") {
-          setMensagem("🚫 Você esgotou suas tentativas.");
-          setPerdeu(true);
-          setTentativasRestantes(0);
-        } else {
-          // Atualiza tentativas restantes
-          const novasTentativas = Math.max(0, data.tentativasRestantes || 0);
-          setTentativasRestantes(novasTentativas);
+        if (modo === "livre") {
+          if (data.tentativasRestantes !== undefined) {
+            const novasTentativas = Math.max(0, data.tentativasRestantes || 0);
+            setTentativasRestantes(novasTentativas);
 
-          if (novasTentativas === 0) {
-            setMensagem("🚫 Você esgotou suas tentativas.");
-            setPerdeu(true);
-          } else {
-            // Verifica se ainda há mais imagens, se sim, incrementa a imagem
-            if (imagemIndex < bairroDoDia.imagens.length - 1) {
-              setImagemIndex(imagemIndex + 1);
-              setMensagem("❌ Errou! Veja mais uma imagem...");
+            if (novasTentativas === 0) {
+              setPerdeu(true);
+              setMensagem("🚫 Você esgotou suas tentativas.");
             } else {
-              setMensagem("🚫 Você esgotou as imagens deste bairro.");
+              if (imagemIndex < bairroDoDia.imagens.length - 1) {
+                setImagemIndex(imagemIndex + 1);
+                setMensagem("❌ Errou! Veja mais uma imagem...");
+              } else {
+                setMensagem("❌ Errou!");
+              }
             }
+          }
+        } else {
+          // modo padrão (sem limite de tentativas)
+          if (imagemIndex < bairroDoDia.imagens.length - 1) {
+            setImagemIndex(imagemIndex + 1);
+            setMensagem("❌ Errou! Veja mais uma imagem...");
+          } else {
+            setMensagem("❌ Errou!");
           }
         }
       }
 
-      // Limpa a tentativa e sugestões
       setTentativa("");
       setSugestoes([]);
     } catch (error) {
@@ -170,15 +196,36 @@ export default function GameContent({ modo }) {
             </button>
           </form>
 
-          {tentativasRestantes > 0 && (
-            <p className="tentativas-container">
-              Tentativas restantes: {tentativasRestantes}
-            </p>
+          {modo === "livre" && (
+            <div className="tentativas-container">
+              <span className="tentativas-label">Vidas:</span>
+              {Array.from({ length: 5 }, (_, i) => (
+                <span
+                  key={i}
+                  className={`coracao ${
+                    i < tentativasRestantes ? "viva" : "perdida"
+                  }`}
+                >
+                  {i < tentativasRestantes ? "❤️" : "💔"}
+                </span>
+              ))}
+            </div>
           )}
         </>
       )}
 
       {mensagem && <p className="game-mensagem">{mensagem}</p>}
+
+      {acertou && modo === "padrao" && (
+        <div className="countdown">
+          <span>O próximo bairro atualiza em: {contador}</span>
+        </div>
+      )}
+      {acertou && modo === "padrao" && (
+        <a href="/jogar/livre" className="try-livre-button">
+          👉 Experimentar o modo livre
+        </a>
+      )}
 
       {perdeu && (
         <button onClick={tentarNovamente} className="retry-button">
