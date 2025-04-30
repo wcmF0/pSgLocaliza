@@ -13,10 +13,14 @@ export default function GameContent({ modo }) {
   const [perdeu, setPerdeu] = useState(false);
   const [contador, setContador] = useState(""); // Estado para o cronômetro
 
-  const endpoint = modo === "padrao" ? "/api/padrao" : "/api/livre";
+  const baseURL = "https://p-sg-localiza-backend.vercel.app/api";
+
+  const endpoint = modo === "padrao" ? `${baseURL}/padrao` : `${baseURL}/livre`;
 
   const verificarEndpoint =
-    modo === "padrao" ? "/api/padrao-verificar" : "api/livre-verificar";
+    modo === "padrao"
+      ? `${baseURL}/padrao-verificar`
+      : `${baseURL}/livre-verificar`;
 
   const carregarBairro = async () => {
     try {
