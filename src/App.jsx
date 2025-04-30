@@ -5,7 +5,7 @@ import NotFound from "./pages/NotFound";
 import PaginaPadrao from "./components/PaginaPadrao/PaginaPadrao";
 import Padrao from "./pages/Padrao";
 import Livre from "./pages/Livre";
-import "./app.css";
+import "./App.css";
 
 function App() {
   return (
