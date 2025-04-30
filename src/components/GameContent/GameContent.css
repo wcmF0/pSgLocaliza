@@ -162,6 +162,7 @@
   text-decoration: none;
   font-weight: bold;
   transition: background-color 0.3s;
+  margin-bottom: 2rem;
 }
 
 .try-livre-button:hover {
@@ -170,5 +171,11 @@
 
 .game-img {
   padding: 0.5rem;
-  border: 2px solid #f2c14e;
+  border: 2px solid #07b7b6;
+}
+
+.countdown span {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-size: 4rem;
 }

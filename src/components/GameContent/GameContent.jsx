@@ -11,7 +11,7 @@ export default function GameContent({ modo }) {
   const [mensagem, setMensagem] = useState("");
   const [tentativasRestantes, setTentativasRestantes] = useState(5);
   const [perdeu, setPerdeu] = useState(false);
-  const [contador, setContador] = useState(""); // Novo estado para o cronômetro
+  const [contador, setContador] = useState(""); // Estado para o cronômetro
 
   const endpoint =
     modo === "padrao"
@@ -218,7 +218,8 @@ export default function GameContent({ modo }) {
 
       {acertou && modo === "padrao" && (
         <div className="countdown">
-          <span>O próximo bairro atualiza em: {contador}</span>
+          <p>O próximo bairro atualiza em: </p>
+          <span>{contador}</span>
         </div>
       )}
       {acertou && modo === "padrao" && (
