@@ -13,14 +13,14 @@ export default function GameContent({ modo }) {
   const [perdeu, setPerdeu] = useState(false);
   const [contador, setContador] = useState(""); // Estado para o cronômetro
 
-  const baseURL = "https://p-sg-localiza-backend.vercel.app/api";
+  const baseURL = "https://psglocaliza-backend-production.up.railway.app/api";
 
   const endpoint = modo === "padrao" ? `${baseURL}/padrao` : `${baseURL}/livre`;
 
   const verificarEndpoint =
     modo === "padrao"
-      ? `${baseURL}/padrao-verificar`
-      : `${baseURL}/livre-verificar`;
+      ? `${baseURL}/padrao/verificar`
+      : `${baseURL}/livre/verificar`;
 
   const carregarBairro = async () => {
     try {
