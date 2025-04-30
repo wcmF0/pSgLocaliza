@@ -19,8 +19,8 @@ export default function GameContent({ modo }) {
 
   const verificarEndpoint =
     modo === "padrao"
-      ? `${baseURL}/padrao/verificar`
-      : `${baseURL}/livre/verificar`;
+      ? `${baseURL}/padrao-verificar`
+      : `${baseURL}/livre-verificar`;
 
   const carregarBairro = async () => {
     try {
