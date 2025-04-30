@@ -11,7 +11,7 @@ export default function GameContent({ modo }) {
   const [mensagem, setMensagem] = useState("");
   const [tentativasRestantes, setTentativasRestantes] = useState(5);
   const [perdeu, setPerdeu] = useState(false);
-  const [contador, setContador] = useState(""); // Estado para o cronômetro
+  const [contador, setContador] = useState("");
 
   const baseURL = "https://psglocaliza-backend-production.up.railway.app/api";
 
@@ -39,13 +39,11 @@ export default function GameContent({ modo }) {
     }
   };
 
-  // Função para calcular a contagem regressiva até meia-noite
   const calcularContagemRegressiva = () => {
     const now = new Date();
     const nextMidnight = new Date();
-    nextMidnight.setHours(24, 0, 0, 0); // Definir próxima meia-noite
-
-    const diff = nextMidnight - now; // Diferença em milissegundos
+    nextMidnight.setHours(24, 0, 0, 0);
+    const diff = nextMidnight - now;
 
     const horas = Math.floor(diff / 1000 / 60 / 60);
     const minutos = Math.floor((diff / 1000 / 60) % 60);
@@ -60,9 +58,9 @@ export default function GameContent({ modo }) {
 
   useEffect(() => {
     carregarBairro();
-    const timer = setInterval(calcularContagemRegressiva, 1000); // Atualiza a contagem regressiva a cada segundo
+    const timer = setInterval(calcularContagemRegressiva, 1000);
 
-    return () => clearInterval(timer); // Limpa o intervalo quando o componente for desmontado
+    return () => clearInterval(timer);
   }, [modo]);
 
   const handleChange = (e) => {
@@ -75,7 +73,7 @@ export default function GameContent({ modo }) {
       );
       setSugestoes(filtrado);
     } else {
-      setSugestoes([]); // Limpa sugestões se o input estiver vazio
+      setSugestoes([]);
     }
   };
 
@@ -103,7 +101,7 @@ export default function GameContent({ modo }) {
 
         if (modo === "livre") {
           setTimeout(async () => {
-            await carregarBairro(); // carrega novo bairro e reseta tudo
+            await carregarBairro();
           }, 1000);
         }
       } else {
@@ -125,7 +123,6 @@ export default function GameContent({ modo }) {
             }
           }
         } else {
-          // modo padrão (sem limite de tentativas)
           if (imagemIndex < bairroDoDia.imagens.length - 1) {
             setImagemIndex(imagemIndex + 1);
             setMensagem("❌ Errou! Veja mais uma imagem...");
