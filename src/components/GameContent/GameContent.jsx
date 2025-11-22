@@ -13,7 +13,7 @@ export default function GameContent({ modo }) {
   const [perdeu, setPerdeu] = useState(false);
   const [contador, setContador] = useState("");
 
-  const baseURL = "https://psglocaliza-backend-production.up.railway.app/api";
+  const baseURL = "https://psglocaliza-backend-f1a54389c809.herokuapp.com/api";
 
   const endpoint = modo === "padrao" ? `${baseURL}/padrao` : `${baseURL}/livre`;
 
